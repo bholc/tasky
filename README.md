@@ -1,26 +1,50 @@
-# Docker
-A Dockerfile has been provided to run this application.  The default port exposed is 8080.
+Tasky (Go + MongoDB)
 
-# Environment Variables
-The following environment variables are needed.
-|Variable|Purpose|example|
-|---|---|---|
-|`MONGODB_URI`|Address to mongo server|`mongodb://servername:27017` or `mongodb://username:password@hostname:port` or `mongodb+srv://` schema|
-|`SECRET_KEY`|Secret key for JWT tokens|`secret123`|
+Forked from jeffthorne/tasky
+.
 
-Alternatively, you can create a `.env` file and load it up with the environment variables.
+Overview
 
-# Running with Go
+Tasky is a simple task manager written in Go (Gin framework) that uses MongoDB for persistence.
+This fork demonstrates both local development and containerized deployment experience using Docker.
 
-Clone the repository into a directory of your choice Run the command `go mod tidy` to download the necessary packages.
+How to Run (Local)
+go run main.go
 
-You'll need to add a .env file and add a MongoDB connection string with the name `MONGODB_URI` to access your collection for task and user storage.
-You'll also need to add `SECRET_KEY` to the .env file for JWT Authentication.
 
-Run the command `go run main.go` and the project should run on `locahost:8080`
+App runs on: http://localhost:8080
 
-# License
+How to Run (Dockerfile, single container)
 
-This project is licensed under the terms of the MIT license.
+Build and run the app inside a container while connecting to your local MongoDB host:
 
-Original project: https://github.com/dogukanozdemir/golang-todo-mongodb
+docker build -t tasky:latest .
+docker run --rm -p 8081:8080 ^
+  -e MONGODB_URI="mongodb://host.docker.internal:27017" ^
+  -e SECRET_KEY="dev_secret" ^
+  tasky:latest
+
+
+App runs on: http://localhost:8081
+
+MongoDB runs locally (Community Server on port 27017).
+
+Environment Variables
+MONGODB_URI=mongodb://localhost:27017
+SECRET_KEY=dev_secret
+
+Usage
+
+Open the app in your browser.
+
+Sign up with an email and password.
+
+Log in and add tasks at /todo.
+
+Data persists in MongoDB between app restarts.
+
+Credit
+
+Original project by Jeff Thorne
+.
+Containerization and documentation added by Brock Holcombe.
